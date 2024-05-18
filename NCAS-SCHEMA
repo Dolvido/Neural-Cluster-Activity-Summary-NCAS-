@@ -1,0 +1,135 @@
+### NCAS Schema
+
+The NCAS schema is designed to encapsulate and summarize the activity within neuron clusters of neural networks. Below is the detailed schema definition, including all necessary fields and their types.
+
+#### Root Object
+The root object contains metadata about the NCAS format and an array of neuron clusters.
+
+- **NCAS_version**: (string) The version of the NCAS format.
+- **clusters**: (array) An array of neuron cluster objects.
+
+#### Cluster Object
+Each cluster object contains information about a specific neuron cluster.
+
+- **cluster_id**: (string) A unique identifier for the neuron cluster.
+- **cluster_type**: (string) The type of neurons in the cluster (e.g., "excitatory", "inhibitory").
+
+##### Activity Metrics
+The activity metrics object contains various metrics that summarize the activity of the neuron cluster.
+
+- **activation_level**: (float) The average activation level of neurons in the cluster.
+- **spike_rate**: (integer) The frequency of neuron firing within the cluster, measured in spikes per second.
+- **signal_strength**: (float) The intensity of the signals transmitted by the cluster.
+
+##### Temporal Dynamics
+The temporal dynamics object captures the changes in activity metrics over time and the synchronization of neuron firing patterns.
+
+- **time_series**: (array of float) A chronological sequence of activation levels over time.
+- **phase_synchronization**: (float) The degree of synchronization in neuron firing patterns within the cluster.
+
+##### Inter-Cluster Interactions
+The inter-cluster interactions object describes the connections and influences between different neuron clusters.
+
+- **connectivity_map**: (object) A map of connections between clusters, where keys are cluster IDs and values are connection strengths (float).
+- **influence_score**: (object) A map of influence scores between clusters, where keys are cluster IDs and values are influence strengths (float).
+
+### Full Schema Definition (JSON Schema Format)
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Neural Cluster Activity Summary (NCAS)",
+  "type": "object",
+  "properties": {
+    "NCAS_version": {
+      "type": "string",
+      "description": "The version of the NCAS format."
+    },
+    "clusters": {
+      "type": "array",
+      "description": "An array of neuron cluster objects.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "cluster_id": {
+            "type": "string",
+            "description": "A unique identifier for the neuron cluster."
+          },
+          "cluster_type": {
+            "type": "string",
+            "description": "The type of neurons in the cluster (e.g., 'excitatory', 'inhibitory')."
+          },
+          "activity_metrics": {
+            "type": "object",
+            "properties": {
+              "activation_level": {
+                "type": "number",
+                "description": "The average activation level of neurons in the cluster."
+              },
+              "spike_rate": {
+                "type": "integer",
+                "description": "The frequency of neuron firing within the cluster, measured in spikes per second."
+              },
+              "signal_strength": {
+                "type": "number",
+                "description": "The intensity of the signals transmitted by the cluster."
+              }
+            },
+            "required": ["activation_level", "spike_rate", "signal_strength"]
+          },
+          "temporal_dynamics": {
+            "type": "object",
+            "properties": {
+              "time_series": {
+                "type": "array",
+                "description": "A chronological sequence of activation levels over time.",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "phase_synchronization": {
+                "type": "number",
+                "description": "The degree of synchronization in neuron firing patterns within the cluster."
+              }
+            },
+            "required": ["time_series", "phase_synchronization"]
+          },
+          "inter_cluster_interactions": {
+            "type": "object",
+            "properties": {
+              "connectivity_map": {
+                "type": "object",
+                "description": "A map of connections between clusters, where keys are cluster IDs and values are connection strengths.",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "influence_score": {
+                "type": "object",
+                "description": "A map of influence scores between clusters, where keys are cluster IDs and values are influence strengths.",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              }
+            },
+            "required": ["connectivity_map", "influence_score"]
+          }
+        },
+        "required": ["cluster_id", "cluster_type", "activity_metrics", "temporal_dynamics", "inter_cluster_interactions"]
+      }
+    }
+  },
+  "required": ["NCAS_version", "clusters"]
+}
+```
+
+### Explanation
+- **NCAS_version**: Specifies the version of the NCAS format to ensure compatibility.
+- **clusters**: An array of objects, each representing a neuron cluster with detailed information.
+- **cluster_id**: A unique identifier for the neuron cluster.
+- **cluster_type**: Specifies the type of neurons (e.g., excitatory or inhibitory).
+- **activity_metrics**: Contains metrics like activation level, spike rate, and signal strength.
+- **temporal_dynamics**: Includes time series data and phase synchronization information.
+- **inter_cluster_interactions**: Describes connectivity and influence scores between clusters.
+
+This schema provides a comprehensive and structured way to capture and summarize neuron cluster activities in neural networks, facilitating easier analysis and visualization.
